@@ -186,6 +186,7 @@ tweetRcodeAddin <- function(){
       }  
       status = tweetRcode::tweet_code(code = my_text,
                                       reply = reply,
+                                      pre_text = input$pre_text,
                                       print_code = input$print_code,
                                       print_output = input$print_output,
                                       do_gist = input$do_gist,
