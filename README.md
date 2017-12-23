@@ -76,7 +76,7 @@ library(tweetRcode)
 
 When you run `tweetRcode` these will be used to authenticate you.
 
-2. **Easy** Put the above code in your `.Rprofile`. It will be run every time you start.
+2. **Easy** Put the above code in your `.Rprofile`. It will be run every time you start R.
 
 ## Tweeting some code
 
