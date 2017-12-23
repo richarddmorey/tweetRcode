@@ -3,6 +3,8 @@
 MYPKGOPTIONS <- settings::options_manager(
   print_code = TRUE,
   print_output = FALSE,
+  print_errors = TRUE,
+  stop_on_errors = TRUE,
   do_gist = TRUE,
   tweet_image = TRUE,
   gif_from_images = TRUE,
