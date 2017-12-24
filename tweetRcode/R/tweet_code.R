@@ -15,6 +15,7 @@
 #' @param image_aspr aspect ratio of images
 #' @param image_res resolution of images
 #' @param envir environment in which to evaluate the R code
+#' @param open_browser open browser to tweet?
 #'
 #' @return
 #' @export
@@ -40,7 +41,8 @@ function(code,
          image_height = pkg_options("image_height"),
          image_aspr = pkg_options("image_aspr"),
          image_res = pkg_options("image_res"),
-         envir = parent.frame()) {
+         envir = parent.frame(),
+         open_browser = pkg_options("open_browser")) {
   
   asx = parse(text = code)
   expr = paste(as.character(asx), collapse = "\n")
@@ -125,19 +127,27 @@ function(code,
   
   tweet_text = paste0(pre_text, "\n", tweet_text)
   
-  ## Authenticate twitter
-  twitteR::setup_twitter_oauth(
-    tweetRcode::pkg_options("twitter_api_key"),
-    tweetRcode::pkg_options("twitter_api_secret"),
-    tweetRcode::pkg_options("twitter_token"),
-    tweetRcode::pkg_options("twitter_token_secret")
-  )
   
   if(do_tweet){
+    
+    ## Authenticate twitter
+    twitteR::setup_twitter_oauth(
+      tweetRcode::pkg_options("twitter_api_key"),
+      tweetRcode::pkg_options("twitter_api_secret"),
+      tweetRcode::pkg_options("twitter_token"),
+      tweetRcode::pkg_options("twitter_token_secret")
+    )
+    
     status = twitteR::updateStatus(tweet_text,
                mediaPath = tweet_image_fn,
                bypassCharLimit = TRUE,
                inReplyTo = reply)
+    
+    if(open_browser){
+      url = paste0("https://twitter.com/",status$screenName,"/status/",status$id)
+      browseURL(url)
+    }
+    
   }else{
     status = c(text = tweet_text,
                image = tweet_image_fn)

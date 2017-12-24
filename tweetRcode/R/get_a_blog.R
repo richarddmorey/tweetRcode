@@ -15,7 +15,7 @@
 get_a_blog <- function(s, 
                      leave_space = pkg_options("getablog_leave_space"),
                      max_char = pkg_options("getablog_max_char"),
-                     open_browser = pkg_options("getablog_open_browser"),
+                     open_browser = pkg_options("open_browser"),
                      reply = NULL,
                      do_tweet = TRUE)
 {

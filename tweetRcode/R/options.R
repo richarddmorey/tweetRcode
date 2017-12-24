@@ -1,6 +1,7 @@
 # Variable, global to package's namespace. 
 # This function is not exported to user space and does not need to be documented.
 MYPKGOPTIONS <- settings::options_manager(
+  open_browser = TRUE,
   print_code = TRUE,
   print_output = FALSE,
   print_errors = TRUE,
@@ -17,8 +18,7 @@ MYPKGOPTIONS <- settings::options_manager(
   twitter_token = NULL, 
   twitter_token_secret = NULL,
   getablog_leave_space = 9,
-  getablog_max_char = 280,
-  getablog_open_browser = TRUE
+  getablog_max_char = 280
 )
 
 
