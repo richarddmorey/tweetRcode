@@ -2,3 +2,8 @@ Name: Tweet R code
 Description: Tweets R code
 Binding: tweetRcodeAddin
 Interactive: true
+
+Name: Get a blog
+Description: Tweets and tweet storms
+Binding: get_a_blog_addin
+Interactive: false

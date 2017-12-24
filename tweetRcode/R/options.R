@@ -15,7 +15,9 @@ MYPKGOPTIONS <- settings::options_manager(
   twitter_api_key = NULL, 
   twitter_api_secret = NULL,
   twitter_token = NULL, 
-  twitter_token_secret = NULL
+  twitter_token_secret = NULL,
+  getablog_leave_space = 9,
+  getablog_max_char = 280
 )
 
 

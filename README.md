@@ -3,6 +3,15 @@ Rstudio addin to tweet from Rstudio
 
 This was cobbled together in a few hours, so *no guarantees*! It works for me. If you want to fix a bug, please make a pull request.
 
+## What it does
+
+The package has two features (right now):
+
+* **Tweet plain text from R.** Highlight text, select "Get a blog" from the RStudio addins menu (under tweetRcode), and the package will split the text, add tweet numbers (if necessary), and then tweet for you. The tweets will be properly threaded.
+
+* **Tweet R code and plots from R.** Highlight R code, select "Tweet R code" from the RStudio addins menu (under tweetRcode), and the package will run the R code and tweet your text/code along with the generated figures. Can also autmatically upload a copy to a GitHub gist and link to it.
+
+
 ## What you'll need
 
 * You'll need a recent version of [RStudio](https://www.rstudio.com/products/rstudio/download/) for this, so that you can use [RStudio addins](https://rstudio.github.io/rstudioaddins/).

@@ -7,13 +7,15 @@
 tweet_code(code, pre_text = NULL, reply = NULL,
   print_code = pkg_options("print_code"),
   print_output = pkg_options("print_output"),
+  print_errors = pkg_options("print_errors"),
+  stop_on_errors = pkg_options("stop_on_errors"),
   do_gist = pkg_options("do_gist"), do_tweet = TRUE,
   tweet_image = pkg_options("tweet_image"),
   gif_from_images = pkg_options("gif_from_images"),
   gif_delay = pkg_options("gif_delay"),
   image_height = pkg_options("image_height"),
   image_aspr = pkg_options("image_aspr"),
-  image_res = pkg_options("image_res"))
+  image_res = pkg_options("image_res"), envir = parent.frame())
 }
 \arguments{
 \item{code}{string variable containing R code}
@@ -37,6 +39,8 @@ tweet_code(code, pre_text = NULL, reply = NULL,
 \item{image_aspr}{aspect ratio of images}
 
 \item{image_res}{resolution of images}
+
+\item{envir}{environment in which to evaluate the R code}
 }
 \description{
 Tweet R code
