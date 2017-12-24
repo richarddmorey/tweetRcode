@@ -87,7 +87,14 @@ When you run `tweetRcode` these will be used to authenticate you.
 
 2. **Easy** Put the above code in your `.Rprofile`. It will be run every time you start R.
 
-## Tweeting some code
+
+## Creating a tweet storm
+
+1. In RStudio, open a new text document (File -> New file -> Text file). 2. Type your tweet storm. A single tweet is fine too; you can just post a single tweet from R.
+3. Highlight the entire text.
+4. Open the Addins menu from the top of the RStudio window, and click "Get a blog" under "tweetRcode". If you've set up authentication correctly, the tweet should post automatically (check twitter).
+
+## Tweeting some R code
 
 You'll need to have configured the authentications before you do this.
 

@@ -11,7 +11,9 @@
 #' @examples
 get_a_blog <- function(s, 
                      leave_space = pkg_options("getablog_leave_space"),
-                     max_char = pkg_options("getablog_max_char"), do_tweet = TRUE)
+                     max_char = pkg_options("getablog_max_char"),
+                     open_browser = pkg_options("getablog_open_browser"),
+                     do_tweet = TRUE)
 {
   
   split_at = max_char - leave_space
@@ -65,6 +67,12 @@ get_a_blog <- function(s,
         statuses[[i]] = twitteR::updateStatus(splits[i], inReplyTo = statuses[[i-1]]$id, bypassCharLimit = TRUE)
       }
     }
+    
+    if(open_browser){
+      url = paste0("https://twitter.com/",statuses[[1]]$screenName,"/status/",statuses[[1]]$id)
+      browseURL(url)
+    }
+    
     return(statuses)
   }else{
     return(splits)
@@ -84,7 +92,6 @@ get_a_blog_addin = function(){
     stop("No text selected.")
   }
   
-  cat(selection_text)
   get_a_blog(selection_text, do_tweet = TRUE)
 }
 
