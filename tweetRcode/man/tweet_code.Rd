@@ -22,9 +22,15 @@ tweet_code(code, pre_text = NULL, reply = NULL,
 
 \item{pre_text}{Text to prepend to the tweet (null if none)}
 
+\item{reply}{ID of a post to reply to (null if not a reply)}
+
 \item{print_code}{print the code in the tweet?}
 
 \item{print_output}{print the output in the tweet?}
+
+\item{print_errors}{print the errors in the tweet?}
+
+\item{stop_on_errors}{stop if an error is encountered?}
 
 \item{do_gist}{create a GitHub gist with the code?}
 

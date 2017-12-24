@@ -6,8 +6,12 @@ Date: 2017-12-23
 Author: Richard D. Morey
 Maintainer: Richard D. Morey <richarddmorey@gmail.com>
 Description: Tweets R code (with Rstudio addin)
-Depends: settings, twitteR, evaluate, gistr, animation, knitr
 Imports:
+  settings,
+  twitteR,
+  evaluate,
+  gistr,
+  animation,
   shiny (>= 0.13),
   miniUI (>= 0.1.1),
   rstudioapi (>= 0.5)

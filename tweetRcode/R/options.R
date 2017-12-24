@@ -44,6 +44,7 @@ MYPKGOPTIONS <- settings::options_manager(
 #' }
 #'
 #' @export
+#' @import settings
 pkg_options <- function(...){
   # protect against the use of reserved words.
   settings::stop_if_reserved(...)

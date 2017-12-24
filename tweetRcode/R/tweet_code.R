@@ -18,6 +18,10 @@
 #'
 #' @return
 #' @export
+#' @import evaluate
+#' @import animation
+#' @import twitteR
+#' @import gistr
 #'
 #' @examples
 tweet_code <-

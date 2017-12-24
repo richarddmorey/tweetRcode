@@ -9,6 +9,7 @@
 #'
 #' @return
 #' @export
+#' @import twitteR
 #'
 #' @examples
 get_a_blog <- function(s, 
@@ -82,7 +83,13 @@ get_a_blog <- function(s,
   }
 }
 
-
+#' Title
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' @import rstudioapi  
 get_a_blog_addin_simple = function(){
 
   context <- rstudioapi::getActiveDocumentContext()
