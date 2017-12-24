@@ -94,6 +94,8 @@ When you run `tweetRcode` these will be used to authenticate you.
 3. Highlight the entire text.
 4. Open the Addins menu from the top of the RStudio window, and click "Get a blog" under "tweetRcode". If you've set up authentication correctly, the tweet should post automatically (check twitter).
 
+"Get a blog (configurable)" lets you edit the text and post it as a reply, if you like. The simple interface just splits and tweets.
+
 ## Tweeting some R code
 
 You'll need to have configured the authentications before you do this.

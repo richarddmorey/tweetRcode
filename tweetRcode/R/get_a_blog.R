@@ -3,6 +3,8 @@
 #' @param s character string; text of tweet(s) 
 #' @param leave_space integer; how much space to leave at the end for numbering
 #' @param max_char maximum characters that can go in a tweet
+#' @param open_browser open browser to tweet?
+#' @param reply ID of a post to reply to (null if not a reply)
 #' @param do_tweet logical; tweet, or just return the splitted text?
 #'
 #' @return
@@ -13,6 +15,7 @@ get_a_blog <- function(s,
                      leave_space = pkg_options("getablog_leave_space"),
                      max_char = pkg_options("getablog_max_char"),
                      open_browser = pkg_options("getablog_open_browser"),
+                     reply = NULL,
                      do_tweet = TRUE)
 {
   
@@ -62,7 +65,7 @@ get_a_blog <- function(s,
     
     for(i in 1:length(splits)){
       if(i == 1){
-        statuses[[i]] = twitteR::updateStatus(splits[i], bypassCharLimit = TRUE)
+        statuses[[i]] = twitteR::updateStatus(splits[i], inReplyTo = reply, bypassCharLimit = TRUE)
       }else{
         statuses[[i]] = twitteR::updateStatus(splits[i], inReplyTo = statuses[[i-1]]$id, bypassCharLimit = TRUE)
       }
@@ -80,7 +83,7 @@ get_a_blog <- function(s,
 }
 
 
-get_a_blog_addin = function(){
+get_a_blog_addin_simple = function(){
 
   context <- rstudioapi::getActiveDocumentContext()
   
@@ -93,6 +96,57 @@ get_a_blog_addin = function(){
   }
   
   get_a_blog(selection_text, do_tweet = TRUE)
+}
+
+#' Title
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' @import miniUI
+#' @import rstudioapi  
+#' @import shiny 
+get_a_blog_addin_settings <- function(){
+  
+  ui <- miniPage(
+    gadgetTitleBar("Tweets and tweet storms"),
+    miniContentPanel(
+      fluidPage(
+        textAreaInput("tweet_text", "Tweet text", unname(unlist(rstudioapi::getActiveDocumentContext()$selection)["text"]), 
+                      width = "500px", height="300px"),
+        textInput("reply", "Reply to (ID)"),
+        checkboxInput("browser", "Open browser after?",  pkg_options("getablog_open_browser"))
+      )
+    )
+  )
+  
+  server <- function(input, output, session) {
+    
+
+    observeEvent(input$done, {
+      
+      # Collect inputs
+      if(!is.null(input$reply)){
+        if(input$reply==""){
+          reply = NULL
+        }else{
+          reply = input$reply
+        }
+      }
+  
+      
+      get_a_blog(input$tweet_text, reply = reply, do_tweet = TRUE, open_browser = input$browser)
+      
+      invisible(stopApp())
+    })
+    
+  }
+  
+  viewer <- dialogViewer("Tweet from R", width = 1000, height = 800)
+  runGadget(ui, server, viewer = viewer)
+  
+  
 }
 
 

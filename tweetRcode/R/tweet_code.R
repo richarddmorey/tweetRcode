@@ -2,8 +2,11 @@
 #'
 #' @param code string variable containing R code 
 #' @param pre_text Text to prepend to the tweet (null if none)
+#' @param reply ID of a post to reply to (null if not a reply)
 #' @param print_code print the code in the tweet?
 #' @param print_output print the output in the tweet?
+#' @param print_errors print the errors in the tweet?
+#' @param stop_on_errors stop if an error is encountered?
 #' @param do_gist create a GitHub gist with the code?
 #' @param tweet_image Tweet an image with the code (if code creates image)?
 #' @param gif_from_images If code creates multiple images, combine them as GIF?

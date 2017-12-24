@@ -5,5 +5,10 @@ Interactive: true
 
 Name: Get a blog
 Description: Tweets and tweet storms
-Binding: get_a_blog_addin
+Binding: get_a_blog_addin_simple
 Interactive: false
+
+Name: Get a blog (configurable)
+Description: Tweets and tweet storms
+Binding: get_a_blog_addin_settings
+Interactive: true
