@@ -3,6 +3,8 @@ Rstudio addin to tweet from Rstudio
 
 This was cobbled together in a few hours, so *no guarantees*! It works for me. If you want to fix a bug, please make a pull request.
 
+![Tweeting from RStudio](http://richarddmorey.org/content/img/tweetRcode_tweet.gif)
+
 ## What it does
 
 Have you ever wanted to...
