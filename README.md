@@ -83,38 +83,9 @@ Now when you start R, the key will be set.
 
 ## Authenticating Twitter
 
-Authenticating twitter is a bit more complicated, but not much. Follow [these instructions](https://www.slickremix.com/docs/how-to-get-api-keys-and-tokens-for-twitter/) to get your API key, API secret, token, and token secret (you'll need all four). Make sure the "Access level" is "read and write". Copy these four numbers down.
+Authenticating twitter is a bit more complicated, but not much. Follow [these instructions](https://cran.r-project.org/web/packages/rtweet/vignettes/auth.html) and you'll be good to go.
 
-Like with GitHub, there's an easiest way that you have to do every time and a more complicated (but only just) way that you only need to do once.
-
-1. **Easiest** Load the `tweetRcode` package, then define the options you got from twitter as options for `tweetRcode`.
-
-```    
-library(tweetRcode)
-  tweetRcode::pkg_options(
-    twitter_api_key = "YOUR_TWITTER_API_KEY", 
-    twitter_api_secret = "YOUR_TWITTER_API_SECRET",
-    twitter_token = "YOUR_TWITTER_TOKEN", 
-    twitter_token_secret = "YOUR_TWITTER_TOKEN_SECRET" 
-  )
-```
-
-When you run `tweetRcode` these will be used to authenticate you.
-
-2. **Easy** Put the above code in your `.Rprofile`. It will be run every time you start R.
-
-I've found Twitter authentication to be a bit iffy sometimes. If you want to authenticate on start up, you can put this code in your `.Rprofile`:
-
-```
-twitteR::setup_twitter_oauth(
-    tweetRcode::pkg_options("twitter_api_key"),
-    tweetRcode::pkg_options("twitter_api_secret"),
-    tweetRcode::pkg_options("twitter_token"),
-    tweetRcode::pkg_options("twitter_token_secret")
-)
-```
-
-You can also run this when code if you're having trouble authenticating while using `tweetRcode`.
+**If you followed the old instructions for the `twitteR` package, you'll need to redo it; the new functions are based on the `rtweet` package.**
 
 ## Creating a tweet storm
 
@@ -138,6 +109,6 @@ Depending on the options you've selected, it may take a few seconds to run the c
 
 ## Known issues
 
-* There seems to be an issue where posting a reply to *someone else's tweet* gets posted on your own timeline (not as a reply). I assume this is an issue with the [`twitteR`](https://cran.r-project.org/web/packages/twitteR/) package.
+* If you want to post a reply to someone else's tweet, you'll need to mention the owner of that tweet in order to properly reply. If you don't, the tweet will be posted to your timeline (i.e., not a reply). This is a limitation of the Twitter API.
 
-* Replies aren't tagged with anyone in the thread. You'll need to mention users explicitly if you want them to be notified that you replied. 
+* Replies don't seem to be tagged with anyone in the thread. You'll need to mention users explicitly if you want them to be notified that you replied. 

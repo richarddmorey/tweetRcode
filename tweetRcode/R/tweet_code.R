@@ -21,7 +21,7 @@
 #' @export
 #' @import evaluate
 #' @import animation
-#' @import twitteR
+#' @import rtweet
 #' @import gistr
 #'
 #' @examples
@@ -138,16 +138,12 @@ function(code,
   
   if(do_tweet){
     
-    ## Authenticate twitter
-    twitter_auth()
-    
-    status = twitteR::updateStatus(tweet_text,
-               mediaPath = tweet_image_fn,
-               bypassCharLimit = TRUE,
-               inReplyTo = tweet_id_from_text(reply))
+    status = post_and_return_id(tweet_text,
+                                media = tweet_image_fn,
+                                in_reply_to_status_id = tweet_id_from_text(reply))
     
     if(open_browser){
-      url = paste0("https://twitter.com/",status$screenName,"/status/",status$id)
+      url = paste0("https://twitter.com/",status['username'],"/status/",status['id'])
       browseURL(url)
     }
     

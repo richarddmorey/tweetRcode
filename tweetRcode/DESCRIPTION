@@ -8,7 +8,7 @@ Maintainer: Richard D. Morey <richarddmorey@gmail.com>
 Description: Tweets R code (with Rstudio addin)
 Imports:
   settings,
-  twitteR,
+  rtweet,
   evaluate,
   gistr,
   animation,

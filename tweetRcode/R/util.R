@@ -29,22 +29,6 @@ tweet_id_from_text = function(s){
   return(id)
 }
 
-
-twitter_auth = function(){
-  fe = file.exists(".httr-oauth")
-  
-  ## Already authenticated
-  if(fe) return()
-  
-  twitteR::setup_twitter_oauth(
-    pkg_options("twitter_api_key"),
-    pkg_options("twitter_api_secret"),
-    pkg_options("twitter_token"),
-    pkg_options("twitter_token_secret")
-  )
-  
-}
-
 #' Title
 #'
 #' @return
@@ -73,7 +57,14 @@ get_device_image = function(which = dev.cur(),
   return(tf)
 }
 
-interactive.devices = function(dev){
+interactive_devices = function(dev){
   idx = names(dev.list()) %in% deviceIsInteractive()
   dev.list()[idx]
+}
+
+post_and_return_id = function(...){
+  result = rtweet::post_tweet(...)
+  username = result$request$auth_token$credentials$screen_name
+  my_timeline <- get_timeline(username, n=1)
+  c(id = my_timeline[1,]$status_id, username = username)
 }

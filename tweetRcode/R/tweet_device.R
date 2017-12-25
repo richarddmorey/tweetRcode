@@ -4,6 +4,7 @@
 #' @export
 #'
 #' @examples
+#' @import rtweet
 tweet_device = function(which = dev.cur(), 
                         tweet_text = "", 
                         reply = NULL,
@@ -19,16 +20,12 @@ tweet_device = function(which = dev.cur(),
   
   if(do_tweet){
     
-    ## Authenticate twitter
-    twitter_auth()
-    
-    status = twitteR::updateStatus(tweet_text,
-                                   mediaPath = tf,
-                                   bypassCharLimit = TRUE,
-                                   inReplyTo = tweet_id_from_text(reply))
+    status = post_and_return_id(tweet_text,
+                                media = tf,
+                                in_reply_to_status_id = tweet_id_from_text(reply))
     
     if(open_browser){
-      url = paste0("https://twitter.com/",status$screenName,"/status/",status$id)
+      url = paste0("https://twitter.com/",status['username'],"/status/",status['id'])
       browseURL(url)
     }
     

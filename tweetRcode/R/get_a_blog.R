@@ -9,8 +9,7 @@
 #'
 #' @return
 #' @export
-#' @import twitteR
-#'
+#' @import rtweet
 #' @examples
 get_a_blog <- function(s, 
                      leave_space = pkg_options("getablog_leave_space"),
@@ -24,7 +23,7 @@ get_a_blog <- function(s,
                      image_res = pkg_options("image_res"))
 {
   
-  reply = tweet_id_from_text(input$reply)
+  reply = tweet_id_from_text(reply)
   
   if(!is.null(image_device)){
     tf = get_device_image(image_device, 
@@ -75,20 +74,21 @@ get_a_blog <- function(s,
   
   if(do_tweet){
     
-    twitter_auth()
-    
     statuses = list()
     
     for(i in 1:length(splits)){
       if(i == 1){
-        statuses[[i]] = twitteR::updateStatus(splits[i], inReplyTo = reply, bypassCharLimit = TRUE, mediaPath = tf)
+        statuses[[i]] = post_and_return_id(status = splits[i], 
+                                           in_reply_to_status_id = reply, 
+                                           media = tf)
       }else{
-        statuses[[i]] = twitteR::updateStatus(splits[i], inReplyTo = statuses[[i-1]]$id, bypassCharLimit = TRUE)
+        statuses[[i]] = post_and_return_id(status = splits[i], 
+                                           in_reply_to_status_id = statuses[[i-1]]['id'])
       }
     }
     
     if(open_browser){
-      url = paste0("https://twitter.com/",statuses[[1]]$screenName,"/status/",statuses[[1]]$id)
+      url = paste0("https://twitter.com/",statuses[[1]]['username'],"/status/",statuses[[1]]['id'])
       browseURL(url)
     }
     
@@ -145,7 +145,7 @@ get_a_blog_addin_settings <- function(){
         textInput("reply", "Reply to (Tweet URL or ID)")
         ),
         column(6,
-          selectInput("device", "Device ", c(None=-1,interactive.devices())),
+          selectInput("device", "Image from device?", c(None=-1,interactive_devices())),
           conditionalPanel("input.device != -1",
             imageOutput("image1", height = 100, width=150),
             numericInput("image_height", "Image height (px)", pkg_options("image_height")),
