@@ -44,18 +44,33 @@ function(code,
          envir = parent.frame(),
          open_browser = pkg_options("open_browser")) {
   
+
   asx = parse(text = code)
   expr = paste(as.character(asx), collapse = "\n")
-  out = evaluate::evaluate(expr,envir = envir)
+  if(substring(expr,nchar(expr)) != "\n"){
+    expr = paste0(expr, "\n")
+  }
   
-  images = sapply(out, function(o) "recordedplot" %in% class(o) )
+  tf = get_tf_wildcard()
+  
+  png(filename = tf$name, height = image_height,
+      width = image_aspr * image_height,
+      res = image_res)
+  dv = dev.cur()
+  on.exit( { dev.off(dv) }, add = TRUE)
+  out = evaluate::evaluate(expr, envir = envir, new_device = FALSE)
+  dev.off(dv)
+
+  images = dir(tf$dir, tf$pattern, full.names = TRUE)
+  
+  
   tweet_text = ""
   
   for (obj in out) {
      if ( ( "source" %in% class(obj) ) & print_code) {
       tweet_text = paste0(tweet_text, obj)
     } else if ( ( "character" %in% class(obj) ) & print_output) {
-      tweet_text = paste0(tweet_text, obj)
+      tweet_text = paste0(tweet_text, "## " ,obj)
     } else if ( ( "error"  %in% class(obj) ) & print_errors) {
       if(stop_on_errors) stop(obj)
       tweet_text = paste0(tweet_text, "## ", obj)
@@ -67,12 +82,24 @@ function(code,
     ## Authenticate GitHub
     gistr::gist_auth()
     
+    h = image_height / image_res
+    w = h * image_aspr
+    
+    td = basename(tempfile(pattern = "tmp"))
+    if(dir.exists(td)){
+      stop("Could not create temporary directory for gist images.")
+    }
+    on.exit({
+      if(dir.exists(td)){ unlink(td, recursive = TRUE) }
+    }, add = TRUE)
+    
     tf_code = tempfile(fileext = ".Rmd")
-    cat("```{r echo=TRUE}",
-        code,
-        "```",
+    cat("```{r echo=TRUE, fig.path='",td,"/', fig.width=",w,
+        ", fig.height=",h,", dpi=", image_res,"}\n",
+        expr,
+        "\n```",
         file = tf_code,
-        sep = "\n")
+        sep = "")
     
     g = gistr::gist_create(
       tf_code,
@@ -83,40 +110,20 @@ function(code,
     )
     gist_url = paste0("https://gist.github.com/", g$id)
     tweet_text = paste0(tweet_text, "\n## ", gist_url)
+    
   }
   
   if (tweet_image) {
-    if (sum(images) > 1 & gif_from_images) {
+    if (length(images) > 1 & gif_from_images) {
       gif_tf = tempfile(fileext = ".gif")
-      frames = c()
-      for(i in which(images)){
-        frames = c(frames, tempfile(fileext = ".png"))
-        png(
-          filename = frames[length(frames)],
-          height = image_height,
-          width = image_aspr * image_height,
-          res = image_res
-        )
-        replayPlot(out[[i]])
-        dev.off()
-      }
       ao = ani.options()
       ani.options(interval = gif_delay, autobrowse = FALSE)
-      animation::im.convert(files = frames, output = gif_tf)
+      animation::im.convert(files = images, output = gif_tf)
       do.call(ani.options, ao)
       tweet_image_fn = gif_tf
     } else {
-      if (sum(images) > 0) {
-        tf = tempfile(fileext = ".png")
-        png(
-          filename = tf,
-          height = image_height,
-          width = image_aspr * image_height,
-          res = image_res
-        )
-        replayPlot(out[[which(images)[1]]])
-        dev.off()
-        tweet_image_fn = tf
+      if (length(images) > 0) {
+         tweet_image_fn = images[1]
       } else{
         tweet_image_fn = NULL
       }
@@ -156,6 +163,18 @@ function(code,
   return(status)
 }
 
+get_tf_wildcard <- function(){
+  tf_base = tempfile()
+  tf_ext = "_%04d.png"
+  tf_dir = dirname(tf_base)
+  tf = paste0(tf_base,tf_ext)
+  tf_pattern = paste0("^",basename(tf_base),"_[0-9]*\\.png")
+  return(list(name = tf, pattern = tf_pattern, dir = tf_dir))
+}
+
+
+
+
 #' Title
 #'
 #' @return
@@ -177,7 +196,7 @@ tweetRcodeAddin <- function(){
           checkboxInput("print_output", "Include output in tweet?",  pkg_options("print_output")),
           checkboxInput("print_errors", "Include errors in tweet?",  pkg_options("print_errors")),
           checkboxInput("do_gist", "Create gist?",  pkg_options("do_gist")),
-          textInput("reply", "Reply to (ID)")
+          textInput("reply", "Reply to (Tweet ID)")
         ),
         column(6,
           checkboxInput("tweet_image", "Include image in tweet?",  pkg_options("tweet_image")),

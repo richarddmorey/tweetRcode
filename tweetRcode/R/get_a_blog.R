@@ -122,7 +122,7 @@ get_a_blog_addin_settings <- function(){
       fluidPage(
         textAreaInput("tweet_text", "Tweet text", unname(unlist(rstudioapi::getActiveDocumentContext()$selection)["text"]), 
                       width = "500px", height="300px"),
-        textInput("reply", "Reply to (ID)"),
+        textInput("reply", "Reply to (Tweet ID)"),
         checkboxInput("browser", "Open browser after?",  pkg_options("getablog_open_browser"))
       )
     )
