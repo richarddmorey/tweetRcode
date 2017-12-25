@@ -11,7 +11,7 @@ Have you ever wanted to...
 
 * ...easily tweet a plot you're working on, from the RStudio interface?
 * ...respond to someone on Twitter with R code example and plot, to make a point?
-* ...tweet from RStudio, soyou don't have to open Twitter and kill your produtivity?
+* ...tweet from RStudio, so you don't have to open Twitter and kill your produtivity?
 
 *You're in luck.*
 
@@ -21,7 +21,7 @@ The package has two features (right now):
 
 ![Tweeting text from RStudio](http://richarddmorey.org/content/img/tweetRcode_tweet.gif)
 
-* **Tweet R code and plots from R.** Highlight R code, select "Tweet R code" from the RStudio addins menu (under tweetRcode), and the package will run the R code and tweet your text/code along with the generated figures. Can also autmatically upload a copy to a GitHub gist and link to it.
+* **Tweet R code and plots from R.** Highlight R code, select "Tweet R code" from the RStudio addins menu (under tweetRcode), and the package will run the R code and tweet your text/code along with the generated figures. Can also automatically upload a copy to a GitHub gist and link to it.
 
 ![Tweeting code from RStudio](http://richarddmorey.org/content/img/tweetRcode_plot.gif)
 
