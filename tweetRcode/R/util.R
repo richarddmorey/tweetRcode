@@ -73,3 +73,7 @@ get_device_image = function(which = dev.cur(),
   return(tf)
 }
 
+interactive.devices = function(dev){
+  idx = names(dev.list()) %in% deviceIsInteractive()
+  dev.list()[idx]
+}

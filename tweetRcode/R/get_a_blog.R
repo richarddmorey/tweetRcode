@@ -143,9 +143,8 @@ get_a_blog_addin_settings <- function(){
         textInput("reply", "Reply to (Tweet URL or ID)")
         ),
         column(6,
-          checkboxInput("tweet_image", "Include device image in tweet?", FALSE),
-          conditionalPanel("input.tweet_image == 1",
-            selectInput("device", "Device ",dev.list()),
+          selectInput("device", "Device ", c(None=-1,interactive.devices())),
+          conditionalPanel("input.device != -1",
             imageOutput("image1", height = 100, width=150),
             numericInput("image_height", "Image height (px)", pkg_options("image_height")),
             numericInput("image_aspr", "Image aspect ratio", pkg_options("image_aspr")),
@@ -159,19 +158,24 @@ get_a_blog_addin_settings <- function(){
   server <- function(input, output, session) {
     
     output$image1 <- renderImage({
-      # Get width and height of image1
-      height <- input$image_height
-      aspr <- input$image_aspr
-      width = height * aspr 
-      res = input$image_res
-      pixelratio <- session$clientData$pixelratio
+      if(input$device==-1){
+        tf = system.file("img/blank.png", package="tweetRcode")
+        width=1
+        height=1
+      }else{  
+        # Get width and height of image1
+        height <- input$image_height
+        aspr <- input$image_aspr
+        width = height * aspr 
+        res = input$image_res
+        pixelratio <- session$clientData$pixelratio
       
-      device = input$device
-      tf = get_device_image(device, 
+        device = input$device
+        tf = get_device_image(device, 
                             height,
                             aspr,
                             res)
-
+      }  
       # Return a list containing information about the image
       list(src = tf,
            contentType = "image/png",
@@ -194,7 +198,7 @@ get_a_blog_addin_settings <- function(){
         }
       }
       
-      if(input$tweet_image){
+      if(input$device!=-1){
         image_device = input$device
       }else{
         image_device = NULL
