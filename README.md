@@ -4,7 +4,6 @@ Rstudio addin to tweet from Rstudio
 This was cobbled together in a few hours, so *no guarantees*! It works for me. If you want to fix a bug, please make a pull request.
 
 
-
 ## What it does
 
 Have you ever wanted to...
@@ -137,4 +136,6 @@ You'll need to have configured the authentications before you do this.
 
 Depending on the options you've selected, it may take a few seconds to run the code, generate the images, and upload the tweet and gist.
 
+## Known issues
 
+* There seems to be an issue where posting a reply to *someone else's tweet* gets posted on your own timeline (not as a reply). I assume this is an issue with the [`twitteR`](https://cran.r-project.org/web/packages/twitteR/) package.
