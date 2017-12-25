@@ -139,3 +139,5 @@ Depending on the options you've selected, it may take a few seconds to run the c
 ## Known issues
 
 * There seems to be an issue where posting a reply to *someone else's tweet* gets posted on your own timeline (not as a reply). I assume this is an issue with the [`twitteR`](https://cran.r-project.org/web/packages/twitteR/) package.
+
+* Replies aren't tagged with anyone in the thread. You'll need to mention users explicitly if you want them to be notified that you replied. 
