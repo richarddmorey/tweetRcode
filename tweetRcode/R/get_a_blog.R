@@ -141,8 +141,9 @@ get_a_blog_addin_settings <- function(){
       fluidPage(
         column(6,
         textAreaInput("tweet_text", "Tweet text", unname(unlist(rstudioapi::getActiveDocumentContext()$selection)["text"]), 
-                      width = "450px", height="300px"),
-        textInput("reply", "Reply to (Tweet URL or ID)")
+                      width = "450px", height="275px"),
+        textInput("reply", "Reply to (Tweet URL or ID)"),
+        textOutput("warnUser")
         ),
         column(6,
           selectInput("device", "Image from device?", c(None=-1,interactive_devices())),
@@ -158,6 +159,20 @@ get_a_blog_addin_settings <- function(){
   )
   
   server <- function(input, output, session) {
+    
+    output$warnUser <- renderText({
+      
+      id = tweet_id_from_text(input$reply)
+      status = rtweet::lookup_statuses(id)
+      if(is.null(status) | input$reply == "") return("")
+      username = status$screen_name
+      
+      txt = paste("If you are not @", username, 
+                  ", you'll need to mention them in the text of the reply.", sep = "")
+      
+      return(txt)
+      
+    })
     
     output$image1 <- renderImage({
       if(input$device==-1){
