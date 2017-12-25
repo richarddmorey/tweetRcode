@@ -30,7 +30,10 @@ The package has two features (right now):
 
 * You'll need a recent version of [RStudio](https://www.rstudio.com/products/rstudio/download/) for this, so that you can use [RStudio addins](https://rstudio.github.io/rstudioaddins/).
 
-* If you want to create animated GIFs, you'll need [ImageMagick](https://www.imagemagick.org/script/download.php) installed.
+* If you want to create animated GIFs, you'll need [ImageMagick](https://www.imagemagick.org/script/download.php) installed. If you're a Windows user, you'll need to *make sure* you install the "legacy utilities":
+
+![Legacy utilities](http://richarddmorey.org/content/img/imagemagick.png)
+
 
 * If you want to post GitHub gists, you'll need a [GitHub account](https://github.com).
 
@@ -101,6 +104,18 @@ When you run `tweetRcode` these will be used to authenticate you.
 
 2. **Easy** Put the above code in your `.Rprofile`. It will be run every time you start R.
 
+I've found Twitter authentication to be a bit iffy sometimes. If you want to authenticate on start up, you can put this code in your `.Rprofile`:
+
+```
+twitteR::setup_twitter_oauth(
+    tweetRcode::pkg_options("twitter_api_key"),
+    tweetRcode::pkg_options("twitter_api_secret"),
+    tweetRcode::pkg_options("twitter_token"),
+    tweetRcode::pkg_options("twitter_token_secret")
+)
+```
+
+You can also run this when code if you're having trouble authenticating while using `tweetRcode`.
 
 ## Creating a tweet storm
 
