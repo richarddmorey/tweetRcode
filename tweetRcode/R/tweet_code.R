@@ -144,7 +144,7 @@ function(code,
     status = twitteR::updateStatus(tweet_text,
                mediaPath = tweet_image_fn,
                bypassCharLimit = TRUE,
-               inReplyTo = reply)
+               inReplyTo = tweet_id_from_text(reply))
     
     if(open_browser){
       url = paste0("https://twitter.com/",status$screenName,"/status/",status$id)
@@ -217,7 +217,8 @@ tweetRcodeAddin <- function(){
         if(input$reply==""){
           reply = NULL
         }else{
-          tweet_id_from_text(input$reply)        }
+          input$reply        
+        }
       }
       
       selection_text <- unname(unlist(context$selection)["text"])

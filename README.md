@@ -17,7 +17,7 @@ Have you ever wanted to...
 
 The package has two features (right now):
 
-* **Tweet plain text from R.** Highlight text, select "Get a blog" from the RStudio addins menu (under tweetRcode), and the package will split the text, add tweet numbers (if necessary), and then tweet for you. The tweets will be properly threaded.
+* **Tweet plain text from R.** Highlight text, select "Get a blog" from the RStudio addins menu (under tweetRcode), and the package will split the text, add tweet numbers (if necessary), and then tweet for you. The tweets will be properly threaded. You can add an active plot to the tweet.
 
 ![Tweeting text from RStudio](http://richarddmorey.org/content/img/tweetRcode_tweet.gif)
 
@@ -106,9 +106,9 @@ When you run `tweetRcode` these will be used to authenticate you.
 
 1. In RStudio, open a new text document (File -> New file -> Text file). 2. Type your tweet storm. A single tweet is fine too; you can just post a single tweet from R.
 3. Highlight the entire text.
-4. Open the Addins menu from the top of the RStudio window, and click "Get a blog" under "tweetRcode". If you've set up authentication correctly, the tweet should post automatically (check twitter).
+4. Open the Addins menu from the top of the RStudio window, and click "Get a blog" under "tweetRcode". If you've set up authentication correctly, the tweet should post automatically.
 
-"Get a blog (configurable)" lets you edit the text and post it as a reply, if you like. The simple interface just splits and tweets.
+"Get a blog (configurable)" lets you edit the text and post it as a reply, if you like. It will also allow you to add an image from your active R plotting devices.
 
 ## Tweeting some R code
 

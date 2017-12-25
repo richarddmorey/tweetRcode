@@ -17,8 +17,21 @@ get_a_blog <- function(s,
                      max_char = pkg_options("getablog_max_char"),
                      open_browser = pkg_options("open_browser"),
                      reply = NULL,
-                     do_tweet = TRUE)
+                     do_tweet = TRUE,
+                     image_device = NULL,
+                     image_height = pkg_options("image_height"),
+                     image_aspr = pkg_options("image_aspr"),
+                     image_res = pkg_options("image_res"))
 {
+  
+  if(!is.null(image_device)){
+    tf = get_device_image(image_device, 
+                          image_height,
+                          image_aspr,
+                          image_res)
+  }else{
+    tf = NULL 
+  }
   
   s = trimws(s)
   
@@ -66,7 +79,7 @@ get_a_blog <- function(s,
     
     for(i in 1:length(splits)){
       if(i == 1){
-        statuses[[i]] = twitteR::updateStatus(splits[i], inReplyTo = reply, bypassCharLimit = TRUE)
+        statuses[[i]] = twitteR::updateStatus(splits[i], inReplyTo = reply, bypassCharLimit = TRUE, mediaPath = tf)
       }else{
         statuses[[i]] = twitteR::updateStatus(splits[i], inReplyTo = statuses[[i-1]]$id, bypassCharLimit = TRUE)
       }
@@ -114,11 +127,14 @@ get_a_blog_addin_simple = function(){
 #' @import miniUI
 #' @import rstudioapi  
 #' @import shiny
-#' @import htmltools
 get_a_blog_addin_settings <- function(){
   
   ui <- miniPage(
     gadgetTitleBar("Tweets and tweet storms"),
+    tags$head(tags$style(
+      type="text/css",
+      "#image1 img {max-width: 100%; width: 100%; height: auto}"
+    )),
     miniContentPanel(
       fluidPage(
         column(6,
@@ -127,13 +143,44 @@ get_a_blog_addin_settings <- function(){
         textInput("reply", "Reply to (Tweet URL or ID)")
         ),
         column(6,
-               textOutput("reply_info")
-        )
+          checkboxInput("tweet_image", "Include device image in tweet?", FALSE),
+          conditionalPanel("input.tweet_image == 1",
+            selectInput("device", "Device ",dev.list()),
+            imageOutput("image1", height = 100, width=150),
+            numericInput("image_height", "Image height (px)", pkg_options("image_height")),
+            numericInput("image_aspr", "Image aspect ratio", pkg_options("image_aspr")),
+            numericInput("image_res", "Image resolution (ppi)", pkg_options("image_res"))
+          )
+         )
       )
     )
   )
   
   server <- function(input, output, session) {
+    
+    output$image1 <- renderImage({
+      # Get width and height of image1
+      height <- input$image_height
+      aspr <- input$image_aspr
+      width = height * aspr 
+      res = input$image_res
+      pixelratio <- session$clientData$pixelratio
+      
+      device = input$device
+      tf = get_device_image(device, 
+                            height,
+                            aspr,
+                            res)
+
+      # Return a list containing information about the image
+      list(src = tf,
+           contentType = "image/png",
+           width = width,
+           height = height,
+           alt = "Device preview")
+      
+    }, deleteFile = TRUE)
+    
     
 
     observeEvent(input$done, {
@@ -146,27 +193,21 @@ get_a_blog_addin_settings <- function(){
           reply = tweet_id_from_text(input$reply)
         }
       }
-  
       
-      get_a_blog(input$tweet_text, reply = reply)
+      if(input$tweet_image){
+        image_device = input$device
+      }else{
+        image_device = NULL
+      }
+
+      get_a_blog(input$tweet_text, reply = reply, image_device = image_device,
+                 image_height = input$image_height, 
+                 image_aspr = input$image_aspr,
+                 image_res = input$image_res)
       
       invisible(stopApp())
     })
     
-    output$reply_info <- renderText({ 
-      
-      
-      reply = tweet_id_from_text(input$reply)
-      if(is.null(reply)) return("")
-      twitter_auth()
-      status = twitteR::showStatus(reply)
-      name = htmltools::htmlEscape(status$screenName)
-      text = htmltools::htmlEscape(status$text)
-      
-      ret = paste(name, "tweeted:", text)
-    
-      return(ret)
-    })
     
   }
   
