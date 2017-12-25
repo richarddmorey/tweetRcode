@@ -24,6 +24,8 @@ get_a_blog <- function(s,
                      image_res = pkg_options("image_res"))
 {
   
+  reply = tweet_id_from_text(input$reply)
+  
   if(!is.null(image_device)){
     tf = get_device_image(image_device, 
                           image_height,
