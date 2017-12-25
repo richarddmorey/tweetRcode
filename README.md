@@ -3,6 +3,7 @@ Rstudio addin to tweet from Rstudio
 
 This was cobbled together in a few hours, so *no guarantees*! It works for me. If you want to fix a bug, please make a pull request.
 
+**If you installed this on or before 25 Dec 2017, you'll need to redo the authentication for twitter. See instructions below.**
 
 ## What it does
 
