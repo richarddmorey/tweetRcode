@@ -60,13 +60,7 @@ get_a_blog <- function(s,
   
   if(do_tweet){
     
-    ## Authenticate twitter
-    twitteR::setup_twitter_oauth(
-      pkg_options("twitter_api_key"),
-      pkg_options("twitter_api_secret"),
-      pkg_options("twitter_token"),
-      pkg_options("twitter_token_secret")
-    )
+    twitter_auth()
     
     statuses = list()
     
@@ -119,17 +113,22 @@ get_a_blog_addin_simple = function(){
 #' @examples
 #' @import miniUI
 #' @import rstudioapi  
-#' @import shiny 
+#' @import shiny
+#' @import htmltools
 get_a_blog_addin_settings <- function(){
   
   ui <- miniPage(
     gadgetTitleBar("Tweets and tweet storms"),
     miniContentPanel(
       fluidPage(
+        column(6,
         textAreaInput("tweet_text", "Tweet text", unname(unlist(rstudioapi::getActiveDocumentContext()$selection)["text"]), 
-                      width = "500px", height="300px"),
-        textInput("reply", "Reply to (Tweet ID)"),
-        checkboxInput("browser", "Open browser after?",  pkg_options("getablog_open_browser"))
+                      width = "450px", height="300px"),
+        textInput("reply", "Reply to (Tweet URL or ID)")
+        ),
+        column(6,
+               textOutput("reply_info")
+        )
       )
     )
   )
@@ -144,14 +143,29 @@ get_a_blog_addin_settings <- function(){
         if(input$reply==""){
           reply = NULL
         }else{
-          reply = input$reply
+          reply = tweet_id_from_text(input$reply)
         }
       }
   
       
-      get_a_blog(input$tweet_text, reply = reply, do_tweet = TRUE, open_browser = input$browser)
+      get_a_blog(input$tweet_text, reply = reply)
       
       invisible(stopApp())
+    })
+    
+    output$reply_info <- renderText({ 
+      
+      
+      reply = tweet_id_from_text(input$reply)
+      if(is.null(reply)) return("")
+      twitter_auth()
+      status = twitteR::showStatus(reply)
+      name = htmltools::htmlEscape(status$screenName)
+      text = htmltools::htmlEscape(status$text)
+      
+      ret = paste(name, "tweeted:", text)
+    
+      return(ret)
     })
     
   }

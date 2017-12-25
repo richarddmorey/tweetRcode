@@ -139,12 +139,7 @@ function(code,
   if(do_tweet){
     
     ## Authenticate twitter
-    twitteR::setup_twitter_oauth(
-      tweetRcode::pkg_options("twitter_api_key"),
-      tweetRcode::pkg_options("twitter_api_secret"),
-      tweetRcode::pkg_options("twitter_token"),
-      tweetRcode::pkg_options("twitter_token_secret")
-    )
+    twitter_auth()
     
     status = twitteR::updateStatus(tweet_text,
                mediaPath = tweet_image_fn,
@@ -192,12 +187,12 @@ tweetRcodeAddin <- function(){
     miniContentPanel(
       fluidPage(
         column(6,
-          textInput("pre_text", "Preface text"),
+          textAreaInput("pre_text", "Preface text", height=100),
           checkboxInput("print_code", "Include code in tweet?",  pkg_options("print_code")),
           checkboxInput("print_output", "Include output in tweet?",  pkg_options("print_output")),
           checkboxInput("print_errors", "Include errors in tweet?",  pkg_options("print_errors")),
           checkboxInput("do_gist", "Create gist?",  pkg_options("do_gist")),
-          textInput("reply", "Reply to (Tweet ID)")
+          textInput("reply", "Reply to (Tweet URL or ID)")
         ),
         column(6,
           checkboxInput("tweet_image", "Include image in tweet?",  pkg_options("tweet_image")),
@@ -222,8 +217,7 @@ tweetRcodeAddin <- function(){
         if(input$reply==""){
           reply = NULL
         }else{
-          reply = input$reply
-        }
+          tweet_id_from_text(input$reply)        }
       }
       
       selection_text <- unname(unlist(context$selection)["text"])
