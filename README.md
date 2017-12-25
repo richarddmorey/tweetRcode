@@ -49,44 +49,35 @@ You can install the package with `devtools`:
         
 You then need to make sure R can authenticate with GitHub (for posting gists) and twitter (for tweeting, of course).
 
-## Authenticating GitHub
-
-In order to post GitHub gists, you need to authenticate to GitHub within R.
-
-There are two ways to do this; an easier one that you'd have to do every session, and a slightly (but only just) more complicated one that you only need to do once.
-
-1. **Easiest** Install the `gistr` package. 
-
-```    
-install.packages('gistr')
-gistr::gist_auth()
-```
-
-This will open up a browser window for you to authenticate.
-
-2. **Easy** Install the `gistr` package. 
-    
-```
-install.packages('gistr')
-```
-
-a. Follow [these directions](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) to get a GitHub personal identification token (PAT). 
-
-b. Open your `.Rprofile` (if you don't know what that is, it is an R file that gets run everytime you start. Look [here](http://www.noamross.net/blog/2012/11/2/rprofile.html)). Add the lines:
-    
-```
-Sys.setenv(GITHUB_PAT = "YOUR_GIST_PAT_KEY")
-```
-
-replacing `YOUR_GIST_PAT_KEY` with the one you generated.
-
-Now when you start R, the key will be set.
-
 ## Authenticating Twitter
 
 Authenticating twitter is a bit more complicated, but not much. Follow [these instructions](https://cran.r-project.org/web/packages/rtweet/vignettes/auth.html) and you'll be good to go.
 
 **If you followed the old instructions for the `twitteR` package, you'll need to redo it; the new functions are based on the `rtweet` package.**
+
+
+## Authenticating GitHub
+
+In order to post GitHub gists, you need to authenticate to GitHub within R.
+
+Follow [these directions](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) to get a GitHub personal identification token (PAT). 
+
+Open the `.Renviron` file that was created/appended in the steps to authenticate Twitter. On the first new line of the `.Renviron` file (after everything else), add
+
+```
+GITHUB_PAT = YOUR_GIST_PAT_KEY
+```
+
+replacing `YOUR_GIST_PAT_KEY` with the one you generated. Save the file.
+
+Restart R, and type this in the R console:
+
+```
+Sys.getenv()[c("TWITTER_PAT","GITHUB_PAT")]
+```
+
+and you should see your PAT tokens. 
+
 
 ## Creating a tweet storm
 
