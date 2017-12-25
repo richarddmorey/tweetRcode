@@ -5,6 +5,14 @@ This was cobbled together in a few hours, so *no guarantees*! It works for me. I
 
 ## What it does
 
+Have you ever wanted to...
+
+* ...easily tweet a plot you're working on, from the RStudio interface?
+* ...respond to someone on Twitter with R code example and plot, to make a point?
+* ...tweet from RStudio, soyou don't have to open Twitter and kill your produtivity?
+
+*You're in luck.*
+
 The package has two features (right now):
 
 * **Tweet plain text from R.** Highlight text, select "Get a blog" from the RStudio addins menu (under tweetRcode), and the package will split the text, add tweet numbers (if necessary), and then tweet for you. The tweets will be properly threaded.

@@ -20,31 +20,37 @@ get_a_blog <- function(s,
                      do_tweet = TRUE)
 {
   
+  s = trimws(s)
+  
   split_at = max_char - leave_space
   s0 = unlist(strsplit(s, " ", fixed = TRUE))
   nc = nchar(s0)
   cc = cumsum(nc)
   cc = cc + 1:length(cc)
   
-  total_word = 0
-  total_char = 0
-  splits = c()
-  done = FALSE
+  if(nchar(s)>max_char){
   
-  while(!done){
+    total_word = 0
+    total_char = 0
+    splits = c()
+    done = FALSE
+  
+    while(!done){
     
-    if(total_word == 0){
-      new_split = max(which(cc < split_at))
-    }else{
-      new_split = new_split + max(which(cc[-(1:total_word)] - total_char < split_at ))
+      if(total_word == 0){
+        new_split = max(which(cc < split_at))
+      }else{
+        new_split = new_split + max(which(cc[-(1:total_word)] - total_char < split_at ))
+      }
+  
+      splits = c(splits, paste(paste(s0[(total_word + 1):new_split]," ", sep = ""), collapse = ""))
+      total_char = sum(sapply(splits, nchar))
+      total_word = new_split
+      if(total_word >= length(cc))
+        done = TRUE
     }
-  
-    
-    splits = c(splits, paste(paste(s0[(total_word + 1):new_split]," ", sep = ""), collapse = ""))
-    total_char = sum(sapply(splits, nchar))
-    total_word = new_split
-    if(total_word >= length(cc))
-      done = TRUE
+  }else{ # No need for splitting
+    splits = list(s)
   }
   
   splits = trimws(splits)

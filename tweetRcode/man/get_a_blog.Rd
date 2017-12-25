@@ -6,7 +6,7 @@
 \usage{
 get_a_blog(s, leave_space = pkg_options("getablog_leave_space"),
   max_char = pkg_options("getablog_max_char"),
-  open_browser = pkg_options("getablog_open_browser"), reply = NULL,
+  open_browser = pkg_options("open_browser"), reply = NULL,
   do_tweet = TRUE)
 }
 \arguments{

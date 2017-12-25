@@ -16,8 +16,11 @@ Set or get options for my package
 
 The following options are supported
 \itemize{
+ \item{\code{open_browser}}{(\code{logical};TRUE) Open the browser to the tweet when done? }
  \item{\code{print_code}}{(\code{logical};TRUE) Print R code to the tweet? }
  \item{\code{print_output}}{(\code{logical};FALSE) Print R output to the tweet? }
+ \item{\code{print_errors}}{(\code{logical};TRUE) Print R errors to the tweet? }
+ \item{\code{stop_on_errors}}{(\code{logical};TRUE) Stop (don't tweet) if errors occur? }
  \item{\code{do_gist}}{(\code{logical};TRUE) Create a gist, and link to it? }
  \item{\code{tweet_image}}{(\code{logical};TRUE) Add an image to the tweet? }
  \item{\code{gif_from_images}}{(\code{logical};TRUE) If multiple plots, create an animated GIF? }
@@ -25,6 +28,12 @@ The following options are supported
  \item{\code{image_height}}{(\code{numeric};800) Image height, in pixels }
  \item{\code{image_aspr}}{(\code{numeric};2) Image aspect ratio }
  \item{\code{image_res}}{(\code{numeric};200) Image resolution }
+ \item{\code{twitter_api_key}}{(\code{character}) Twitter API key }
+ \item{\code{twitter_api_secret}}{(\code{character}) Twitter API secret }
+ \item{\code{twitter_token}}{(\code{character}) Twitter token }
+ \item{\code{twitter_token_secret}}{(\code{character}) Twitter token secret}
+ \item{\code{getablog_leave_space}}{(\code{numeric};9)  Buffer to leave for numbering of tweets }
+ \item{\code{getablog_max_char}}{(\code{numeric};280) Maximum number of characters per tweet }
 }
 }
 

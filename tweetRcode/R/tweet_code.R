@@ -58,7 +58,8 @@ function(code,
       res = image_res)
   dv = dev.cur()
   on.exit( { dev.off(dv) }, add = TRUE)
-  out = evaluate::evaluate(expr, envir = envir, new_device = FALSE)
+  out = evaluate::evaluate(expr, envir = envir, new_device = FALSE, 
+                           stop_on_error = stop_on_errors)
   dev.off(dv)
 
   images = dir(tf$dir, tf$pattern, full.names = TRUE)
