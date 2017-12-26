@@ -168,7 +168,7 @@ get_a_blog_addin_settings <- function(){
       username = status$screen_name
       
       txt = paste("If you are not @", username, 
-                  ", you'll need to mention them in the text of the reply.", sep = "")
+                  ", you'll need to mention them in the first tweet (hint: add the mention first).", sep = "")
       
       return(txt)
       

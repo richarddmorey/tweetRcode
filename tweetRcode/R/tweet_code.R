@@ -224,8 +224,12 @@ tweetRcodeAddin <- function(){
       if(is.null(status) | input$reply == "") return("")
       username = status$screen_name
       
+      #cur_text = input$pre_text
+      #new_text = paste("@", username, " ", cur_text, sep = "")
+      #updateTextAreaInput(session, "pre_text", value = new_text)
+      
       txt = paste("If you are not @", username, 
-                  ", you'll need to mention them in the text of the reply.", sep = "")
+                  ", you'll need to mention them (e.g., in the preface text).", sep = "")
       
       return(txt)
       
