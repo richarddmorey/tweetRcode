@@ -6,17 +6,13 @@ MYPKGOPTIONS <- settings::options_manager(
   print_output = FALSE,
   print_errors = TRUE,
   stop_on_errors = TRUE,
-  do_gist = TRUE,
-  tweet_image = TRUE,
+  do_gist = FALSE,
+  tweet_image = "last",
   gif_from_images = TRUE,
   gif_delay = 2,
-  image_height = 800,
+  image_height = 600,
   image_aspr = 2,
-  image_res = 200,
-  twitter_api_key = NULL, 
-  twitter_api_secret = NULL,
-  twitter_token = NULL, 
-  twitter_token_secret = NULL,
+  image_res = 144,
   getablog_leave_space = 9,
   getablog_max_char = 280
 )
@@ -36,17 +32,12 @@ MYPKGOPTIONS <- settings::options_manager(
 #'  \item{\code{print_output}}{(\code{logical};FALSE) Print R output to the tweet? }
 #'  \item{\code{print_errors}}{(\code{logical};TRUE) Print R errors to the tweet? }
 #'  \item{\code{stop_on_errors}}{(\code{logical};TRUE) Stop (don't tweet) if errors occur? }
-#'  \item{\code{do_gist}}{(\code{logical};TRUE) Create a gist, and link to it? }
-#'  \item{\code{tweet_image}}{(\code{logical};TRUE) Add an image to the tweet? }
-#'  \item{\code{gif_from_images}}{(\code{logical};TRUE) If multiple plots, create an animated GIF? }
+#'  \item{\code{do_gist}}{(\code{logical};FALSE) Create a gist, and link to it? }
+#'  \item{\code{tweet_image}}{(\code{character};"last") Add an image to the tweet? Options are "none", "gif", "first", and "last" }
 #'  \item{\code{gif_delay}}{(\code{numeric};2) Delay between GIF frame transitions (seconds) }
-#'  \item{\code{image_height}}{(\code{numeric};800) Image height, in pixels }
+#'  \item{\code{image_height}}{(\code{numeric};600) Image height, in pixels }
 #'  \item{\code{image_aspr}}{(\code{numeric};2) Image aspect ratio }
-#'  \item{\code{image_res}}{(\code{numeric};200) Image resolution }
-#'  \item{\code{twitter_api_key}}{(\code{character}) Twitter API key }
-#'  \item{\code{twitter_api_secret}}{(\code{character}) Twitter API secret }
-#'  \item{\code{twitter_token}}{(\code{character}) Twitter token }
-#'  \item{\code{twitter_token_secret}}{(\code{character}) Twitter token secret}
+#'  \item{\code{image_res}}{(\code{numeric};144) Image resolution }
 #'  \item{\code{getablog_leave_space}}{(\code{numeric};9)  Buffer to leave for numbering of tweets }
 #'  \item{\code{getablog_max_char}}{(\code{numeric};280) Maximum number of characters per tweet }
 #' }

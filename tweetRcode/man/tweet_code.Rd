@@ -35,9 +35,7 @@ tweet_code(code, pre_text = NULL, reply = NULL,
 
 \item{do_gist}{create a GitHub gist with the code?}
 
-\item{tweet_image}{Tweet an image with the code (if code creates image)?}
-
-\item{gif_from_images}{If code creates multiple images, combine them as GIF?}
+\item{tweet_image}{Tweet an image with the code (if code creates image)? Options are "none", "gif", "first", and "last"}
 
 \item{gif_delay}{delay, in seconds, between GIF frames}
 

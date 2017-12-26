@@ -8,8 +8,7 @@
 #' @param print_errors print the errors in the tweet?
 #' @param stop_on_errors stop if an error is encountered?
 #' @param do_gist create a GitHub gist with the code?
-#' @param tweet_image Tweet an image with the code (if code creates image)?
-#' @param gif_from_images If code creates multiple images, combine them as GIF?
+#' @param tweet_image Tweet an image with the code (if code creates image)? Options are "none", "gif", "first", and "last"
 #' @param gif_delay delay, in seconds, between GIF frames
 #' @param image_height height of images in pixels
 #' @param image_aspr aspect ratio of images
@@ -23,6 +22,7 @@
 #' @import animation
 #' @import rtweet
 #' @import gistr
+#' @import dplyr
 #'
 #' @examples
 tweet_code <-
@@ -36,7 +36,6 @@ function(code,
          do_gist = pkg_options("do_gist"),
          do_tweet = TRUE,
          tweet_image = pkg_options("tweet_image"),
-         gif_from_images = pkg_options("gif_from_images"),
          gif_delay = pkg_options("gif_delay"),
          image_height = pkg_options("image_height"),
          image_aspr = pkg_options("image_aspr"),
@@ -45,6 +44,10 @@ function(code,
          open_browser = pkg_options("open_browser")) {
   
 
+  if(!(tweet_image %in% c("none", "gif", "first", "last"))){
+    stop("Invalid value for tweet_image: ", tweet_image)
+  }
+    
   asx = parse(text = code)
   expr = paste(as.character(asx), collapse = "\n")
   if(substring(expr,nchar(expr)) != "\n"){
@@ -114,22 +117,24 @@ function(code,
     
   }
   
-  if (tweet_image) {
-    if (length(images) > 1 & gif_from_images) {
+  if (tweet_image != "none" & length(images)>0) {
+    if( length(images)==1){
+      tweet_image_fn = images[1]
+    }else if(tweet_image == "gif") {
       gif_tf = tempfile(fileext = ".gif")
       ao = ani.options()
       ani.options(interval = gif_delay, autobrowse = FALSE)
       animation::im.convert(files = images, output = gif_tf)
       do.call(ani.options, ao)
       tweet_image_fn = gif_tf
-    } else {
-      if (length(images) > 0) {
-         tweet_image_fn = images[1]
-      } else{
-        tweet_image_fn = NULL
-      }
+    } else if(tweet_image == "first") {
+      tweet_image_fn = images[1]
+    } else if(tweet_image == "last"){
+      tweet_image_fn = dplyr::last(images)  
+    }else{  
+      tweet_image_fn = NULL
     }
-  } else{
+  }else{
     tweet_image_fn = NULL
   }
   
@@ -188,15 +193,20 @@ tweetRcodeAddin <- function(){
           checkboxInput("print_output", "Include output in tweet?",  pkg_options("print_output")),
           checkboxInput("print_errors", "Include errors in tweet?",  pkg_options("print_errors")),
           checkboxInput("do_gist", "Create gist?",  pkg_options("do_gist")),
-          textInput("reply", "Reply to (Tweet URL or ID)")
+          textInput("reply", "Reply to (Tweet URL or ID)"),
+          textOutput("warnUser")
         ),
         column(6,
-          checkboxInput("tweet_image", "Include image in tweet?",  pkg_options("tweet_image")),
-          checkboxInput("gif_from_images", "Include multiple images in animation?",  pkg_options("gif_from_images")),
-          numericInput("gif_delay", "Delay between images (seconds)", pkg_options("gif_delay")),
-          numericInput("image_height", "Image height (px)", pkg_options("image_height")),
-          numericInput("image_aspr", "Image aspect ratio", pkg_options("image_aspr")),
-          numericInput("image_res", "Image resolution (ppi)", pkg_options("image_res"))
+               selectInput("tweet_image", "Include image?", 
+                           c(None="none","All with GIF"="gif",First="first",Last="last"), pkg_options("tweet_image")),
+               conditionalPanel("input.tweet_image != 'none'",
+                                conditionalPanel("input.tweet_image == 'gif'",
+                                  numericInput("gif_delay", "Delay between images (seconds)", pkg_options("gif_delay"))
+                                ),
+                                numericInput("image_height", "Image height (px)", pkg_options("image_height")),
+                                numericInput("image_aspr", "Image aspect ratio", pkg_options("image_aspr")),
+                                numericInput("image_res", "Image resolution (ppi)", pkg_options("image_res"))
+               )
         )
       )
     )
@@ -206,6 +216,20 @@ tweetRcodeAddin <- function(){
     
     # Get the document context.
     context <- rstudioapi::getActiveDocumentContext()
+    
+    output$warnUser <- renderText({
+      
+      id = tweet_id_from_text(input$reply)
+      status = rtweet::lookup_statuses(id)
+      if(is.null(status) | input$reply == "") return("")
+      username = status$screen_name
+      
+      txt = paste("If you are not @", username, 
+                  ", you'll need to mention them in the text of the reply.", sep = "")
+      
+      return(txt)
+      
+    })
     
     observeEvent(input$done, {
       # Collect inputs
@@ -236,7 +260,6 @@ tweetRcodeAddin <- function(){
                                       do_gist = input$do_gist,
                                       do_tweet = TRUE,
                                       tweet_image = input$tweet_image,
-                                      gif_from_images = input$gif_from_images,
                                       gif_delay = input$gif_delay,
                                       image_height = input$image_height,
                                       image_aspr = input$image_aspr,
