@@ -165,9 +165,9 @@ get_a_blog_addin_settings <- function(){
       id = tweet_id_from_text(input$reply)
       status = rtweet::lookup_statuses(id)
       if(is.null(status) | input$reply == "") return("")
-      username = status$screen_name
+      username = paste0("@",status$screen_name)
       
-      txt = paste("If you are not @", username, 
+      txt = paste("If you are not ", username, 
                   ", you'll need to mention them in the first tweet (hint: add the mention first).", sep = "")
       
       return(txt)

@@ -222,13 +222,16 @@ tweetRcodeAddin <- function(){
       id = tweet_id_from_text(input$reply)
       status = rtweet::lookup_statuses(id)
       if(is.null(status) | input$reply == "") return("")
-      username = status$screen_name
+      username = paste0("@",status$screen_name)
       
-      #cur_text = input$pre_text
-      #new_text = paste("@", username, " ", cur_text, sep = "")
-      #updateTextAreaInput(session, "pre_text", value = new_text)
+#      cur_text = input$pre_text
+#      if(substring(cur_text, 1, nchar(username)) != username){
+#        new_text = paste(username, " ", cur_text, sep = "")
+#        updateTextAreaInput(session, "pre_text", value = new_text)
+#      }
       
-      txt = paste("If you are not @", username, 
+      
+      txt = paste("If you are not ", username, 
                   ", you'll need to mention them (e.g., in the preface text).", sep = "")
       
       return(txt)
