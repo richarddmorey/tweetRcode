@@ -111,6 +111,8 @@ Depending on the options you've selected, it may take a few seconds to run the c
 
 * [gistr](https://github.com/ropensci/gistr): used for GitHub gist API calls.
 
+* [animation](https://github.com/yihui/animation): used for joining images into animated GIFs.
+
 * [codefinch](https://github.com/ropenscilabs/codefinch): RStudio addin for tweeting images of R code. Similar to tweetRcode but different in execution.
 
 * [hrbraddins](https://github.com/hrbrmstr/hrbraddins): Includes RStudio addin for Tweet storms, but with fewer features.
