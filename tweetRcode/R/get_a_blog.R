@@ -6,6 +6,11 @@
 #' @param open_browser open browser to tweet?
 #' @param reply ID of a post to reply to (null if not a reply)
 #' @param do_tweet logical; tweet, or just return the splitted text?
+#' @param image_device Device number to share as image
+#' @param image_height Image height (px)
+#' @param image_aspr Image aspect ratio (width / height)
+#' @param image_res Image resolution (ppi)
+#' @param split_on User-defined POSIX regular expression for forced splits in tweets
 #'
 #' @return
 #' @export
@@ -20,7 +25,8 @@ get_a_blog <- function(s,
                      image_device = NULL,
                      image_height = pkg_options("image_height"),
                      image_aspr = pkg_options("image_aspr"),
-                     image_res = pkg_options("image_res"))
+                     image_res = pkg_options("image_res"),
+                     split_on = pkg_options("getablog_split_on"))
 {
   
   reply = tweet_id_from_text(reply)
@@ -34,43 +40,13 @@ get_a_blog <- function(s,
     tf = NULL 
   }
   
-  s = trimws(s)
-  
-  split_at = max_char - leave_space
-  s0 = unlist(strsplit(s, " ", fixed = TRUE))
-  nc = nchar(s0)
-  cc = cumsum(nc)
-  cc = cc + 1:length(cc)
-  
-  if(nchar(s)>max_char){
-  
-    total_word = 0
-    total_char = 0
-    splits = c()
-    done = FALSE
-  
-    while(!done){
-    
-      if(total_word == 0){
-        new_split = max(which(cc < split_at))
-      }else{
-        new_split = new_split + max(which(cc[-(1:total_word)] - total_char < split_at ))
-      }
-  
-      splits = c(splits, paste(paste(s0[(total_word + 1):new_split]," ", sep = ""), collapse = ""))
-      total_char = sum(sapply(splits, nchar))
-      total_word = new_split
-      if(total_word >= length(cc))
-        done = TRUE
-    }
-  }else{ # No need for splitting
-    splits = list(s)
+  if( nchar(s) > max_char ){
+    splits = split_tweet0(s, split_on, leave_space, max_char)
+  }else{
+    splits = s
   }
   
-  splits = trimws(splits)
-  
-  if(length(splits)>1)
-    splits = paste(splits, " (",1:length(splits),"/",length(splits),")", sep = "")
+  splits = paste(splits, " (",1:length(splits),"/",length(splits),")", sep = "")
   
   if(do_tweet){
     
@@ -234,9 +210,59 @@ get_a_blog_addin_settings <- function(){
   
   viewer <- dialogViewer("Tweet from R", width = 1000, height = 800)
   runGadget(ui, server, viewer = viewer)
-  
-  
 }
 
+## Does initial user-defined splits, then passes each segment off 
+## to be split by size
+split_tweet0 = function(s, split_on = "\\n---*\\n", ...){
+  splt = strsplit(s, split_on)[[1]]
+  unlist(lapply(splt, split_tweet1))
+}
 
+## Split by size
+split_tweet1 = function(s, 
+                        leave_space = pkg_options("getablog_leave_space"),
+                        max_char = pkg_options("getablog_max_char"))
+{
+  
+  s = trimws(s)
+  
+  split_at = max_char - leave_space
+  s0 = unlist(strsplit(s, " ", fixed = TRUE))
+  nc = nchar(s0)
+  cc = cumsum(nc)
+  cc = cc + 1:length(cc)
+  
+  if( nchar(s) > split_at ){
+    total_word = 0
+    total_char = 0
+    splits = c()
+    done = FALSE
+  
+    while(!done){
+    
+      if(total_word == 0){
+        new_split = max(which(cc < split_at))
+      }else{
+        new_split = new_split + max(which(cc[-(1:total_word)] - total_char < split_at ))
+      }
+    
+      splits = c(splits, paste(paste(s0[(total_word + 1):new_split]," ", sep = ""), collapse = ""))
+      total_char = sum(sapply(splits, nchar))
+      total_word = new_split
+      if(total_word >= length(cc))
+        done = TRUE
+    }
+  }else{ # No need for splitting
+    splits = s
+  }
+  
+  splits = trimws(splits)
+  
+  # Remove any empty strings
+  splits = splits[ nchar(splits)>0 ]
+  
+  return(splits)
+  
+}
 

@@ -10,7 +10,7 @@ get_a_blog(s, leave_space = pkg_options("getablog_leave_space"),
   do_tweet = TRUE, image_device = NULL,
   image_height = pkg_options("image_height"),
   image_aspr = pkg_options("image_aspr"),
-  image_res = pkg_options("image_res"))
+  image_res = pkg_options("image_res"), split_on = "\\\\n---*\\\\n")
 }
 \arguments{
 \item{s}{character string; text of tweet(s)}

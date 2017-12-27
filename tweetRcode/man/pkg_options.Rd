@@ -21,7 +21,7 @@ The following options are supported
  \item{\code{print_output}}{(\code{logical};FALSE) Print R output to the tweet? }
  \item{\code{print_errors}}{(\code{logical};TRUE) Print R errors to the tweet? }
  \item{\code{stop_on_errors}}{(\code{logical};TRUE) Stop (don't tweet) if errors occur? }
- \item{\code{do_gist}}{(\code{logical};TRUE) Create a gist, and link to it? }
+ \item{\code{do_gist}}{(\code{logical};FALSE) Create a gist, and link to it? }
  \item{\code{tweet_image}}{(\code{character};"last") Add an image to the tweet? Options are "none", "gif", "first", and "last" }
  \item{\code{gif_delay}}{(\code{numeric};2) Delay between GIF frame transitions (seconds) }
  \item{\code{image_height}}{(\code{numeric};600) Image height, in pixels }
@@ -29,6 +29,7 @@ The following options are supported
  \item{\code{image_res}}{(\code{numeric};144) Image resolution }
  \item{\code{getablog_leave_space}}{(\code{numeric};9)  Buffer to leave for numbering of tweets }
  \item{\code{getablog_max_char}}{(\code{numeric};280) Maximum number of characters per tweet }
+ \item{\code{getablog_split_on}}{(\code{character};"\\n---*\\n") User-defined POSIX regular expression for forced splits in tweets }
 }
 }
 
