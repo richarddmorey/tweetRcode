@@ -81,7 +81,7 @@ and you should see your PAT tokens.
 
 ## Creating a tweet storm
 
-1. In RStudio, open a new text document (File -> New file -> Text file). 2. Type your tweet storm. A single tweet is fine too; you can just post a single tweet from R.
+1. In RStudio, open a new text document (File -> New file -> Text file). 2. Type your tweet storm. You can force a break at a point using three or more hyphens (\-\-\-) on a their own line. A single tweet is fine too; you can just post a single tweet from R.
 3. Highlight the entire text.
 4. Open the Addins menu from the top of the RStudio window, and click "Get a blog" under "tweetRcode". If you've set up authentication correctly, the tweet should post automatically.
 
