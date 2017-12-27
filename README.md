@@ -104,3 +104,15 @@ Depending on the options you've selected, it may take a few seconds to run the c
 * If you want to post a reply to someone else's tweet, you'll need to mention the owner of that tweet in order to properly reply. If you don't, the tweet will be posted to your timeline (i.e., not a reply). This is a limitation of the Twitter API.
 
 * Replies don't seem to be tagged with anyone in the thread. You'll need to mention users explicitly if you want them to be notified that you replied. 
+
+## See also
+
+* [rtweet](https://github.com/mkearney/rtweet): used for Twitter API calls. You can use this for much more than tweeting for R.
+
+* [gistr](https://github.com/ropensci/gistr): used for GitHub gist API calls.
+
+* [codefinch](https://github.com/ropenscilabs/codefinch): RStudio addin for tweeting images of R code. Similar to tweetRcode but different in execution.
+
+* [hrbraddins](https://github.com/hrbrmstr/hrbraddins): Includes RStudio addin for Tweet storms, but with fewer features.
+
+
