@@ -11,7 +11,8 @@ get_a_blog(s, leave_space = pkg_options("getablog_leave_space"),
   image_height = pkg_options("image_height"),
   image_aspr = pkg_options("image_aspr"),
   image_res = pkg_options("image_res"),
-  split_on = pkg_options("getablog_split_on"))
+  split_on = pkg_options("getablog_split_on"),
+  n_format = pkg_options("getablog_n_format"))
 }
 \arguments{
 \item{s}{character string; text of tweet(s)}
@@ -35,6 +36,8 @@ get_a_blog(s, leave_space = pkg_options("getablog_leave_space"),
 \item{image_res}{Image resolution (ppi)}
 
 \item{split_on}{User-defined POSIX regular expression for forced splits in tweets}
+
+\item{n_format}{format for tweet numbering, passed to sprintf()}
 }
 \description{
 Tweet, potentially creating tweet storms by splitting tweets on white space

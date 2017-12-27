@@ -11,6 +11,7 @@
 #' @param image_aspr Image aspect ratio (width / height)
 #' @param image_res Image resolution (ppi)
 #' @param split_on User-defined POSIX regular expression for forced splits in tweets
+#' @param n_format format for tweet numbering, passed to sprintf()
 #'
 #' @return
 #' @export
@@ -26,7 +27,8 @@ get_a_blog <- function(s,
                      image_height = pkg_options("image_height"),
                      image_aspr = pkg_options("image_aspr"),
                      image_res = pkg_options("image_res"),
-                     split_on = pkg_options("getablog_split_on"))
+                     split_on = pkg_options("getablog_split_on"),
+                     n_format = pkg_options("getablog_n_format"))
 {
   
   reply = tweet_id_from_text(reply)
@@ -47,7 +49,7 @@ get_a_blog <- function(s,
   }
   
   if(length(splits)>1)
-    splits = paste(splits, " (",1:length(splits),"/",length(splits),")", sep = "")
+    splits = paste(splits, sprintf(n_format, 1:length(splits), length(splits)), sep = " ")
   
   if(do_tweet){
     
