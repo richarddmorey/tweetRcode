@@ -108,6 +108,8 @@ mention_note_text = function(id){
     }
     mention_text = paste0("You might also want to mention ", 
                           mention_list, " so that they are notified.")
+  }else{
+    mention_text = ""
   }
 
   paste("If you are not ", username, 
