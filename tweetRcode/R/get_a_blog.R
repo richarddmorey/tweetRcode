@@ -118,7 +118,7 @@ get_a_blog_addin_settings <- function(){
       fluidPage(
         column(6,
         textAreaInput("tweet_text", "Tweet text", unname(unlist(rstudioapi::getActiveDocumentContext()$selection)["text"]), 
-                      width = "450px", height="275px"),
+                      width = "450px", height="225px", resize = "vertical"),
         textInput("reply", "Reply to (Tweet URL or ID)"),
         textOutput("warnUser")
         ),
@@ -139,14 +139,11 @@ get_a_blog_addin_settings <- function(){
     
     output$warnUser <- renderText({
       
+      if(input$reply == "") return("")
+      
       id = tweet_id_from_text(input$reply)
-      status = rtweet::lookup_statuses(id)
-      if(is.null(status) | input$reply == "") return("")
-      username = paste0("@",status$screen_name)
-      
-      txt = paste("If you are not ", username, 
-                  ", you'll need to mention them in the first tweet (hint: add the mention first).", sep = "")
-      
+      txt = mention_note_text(id)
+            
       return(txt)
       
     })

@@ -189,7 +189,7 @@ tweetRcodeAddin <- function(){
     miniContentPanel(
       fluidPage(
         column(6,
-          textAreaInput("pre_text", "Preface text", height=100),
+          textAreaInput("pre_text", "Preface text", height=75, resize = "vertical"),
           checkboxInput("print_code", "Include code in tweet?",  pkg_options("print_code")),
           checkboxInput("print_output", "Include output in tweet?",  pkg_options("print_output")),
           checkboxInput("print_errors", "Include errors in tweet?",  pkg_options("print_errors")),
@@ -220,20 +220,10 @@ tweetRcodeAddin <- function(){
     
     output$warnUser <- renderText({
       
+      if(input$reply == "") return("")
+      
       id = tweet_id_from_text(input$reply)
-      status = rtweet::lookup_statuses(id)
-      if(is.null(status) | input$reply == "") return("")
-      username = paste0("@",status$screen_name)
-      
-#      cur_text = input$pre_text
-#      if(substring(cur_text, 1, nchar(username)) != username){
-#        new_text = paste(username, " ", cur_text, sep = "")
-#        updateTextAreaInput(session, "pre_text", value = new_text)
-#      }
-      
-      
-      txt = paste("If you are not ", username, 
-                  ", you'll need to mention them (e.g., in the preface text).", sep = "")
+      txt = mention_note_text(id)
       
       return(txt)
       

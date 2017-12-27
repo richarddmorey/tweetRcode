@@ -76,3 +76,40 @@ post_and_return_id = function(...){
   my_timeline <- get_timeline(username, n=1)
   c(id = my_timeline[1,]$status_id, username = username)
 }
+
+
+#' Create text to warn about mentions
+#'
+#' @param id 
+#'
+#' @return
+#' @importFrom rtweet lookup_statuses
+#'
+#' @examples
+mention_note_text = function(id){
+  status = rtweet::lookup_statuses(id)
+  
+  if(!nrow(status)) return("Invalid tweet ID.")
+  
+  username = paste0("@",status$screen_name)
+  mentioned = na.omit(status$mentions_screen_name[[1]])
+  nm = length(mentioned) 
+
+  if(nm > 0){
+    mentioned = paste0("@", mentioned)
+    if(nm > 2){
+      mention_list = paste0(
+        paste(mentioned[-nm],collapse = ", "), ", and ",
+        mentioned[nm])
+    }else if(nm == 2){
+      mention_list = paste(mentioned, collapse = " and ")
+    }else if(nm == 1){
+      mention_list = mentioned
+    }
+    mention_text = paste0("You might also want to mention ", 
+                          mention_list, " so that they are notified.")
+  }
+
+  paste("If you are not ", username, 
+            ", you'll need to mention them in the tweet (hint: add the mention first). ", mention_text, sep = "")
+}
