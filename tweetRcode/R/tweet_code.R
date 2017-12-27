@@ -13,6 +13,7 @@
 #' @param image_height height of images in pixels
 #' @param image_aspr aspect ratio of images
 #' @param image_res resolution of images
+#' @param image_res_scale scale factor to multiply dimensions and resolution by
 #' @param envir environment in which to evaluate the R code
 #' @param open_browser open browser to tweet?
 #'
@@ -39,6 +40,7 @@ function(code,
          image_height = pkg_options("image_height"),
          image_aspr = pkg_options("image_aspr"),
          image_res = pkg_options("image_res"),
+         image_res_scale = pkg_options("image_res_scale"),
          envir = parent.frame(),
          open_browser = pkg_options("open_browser")) {
   
@@ -54,6 +56,9 @@ function(code,
   }
   
   tf = get_tf_wildcard()
+  
+  image_height = image_height * image_res_scale
+  image_res = image_res * image_res_scale
   
   # evaluate code dumping images to png files
   png(filename = tf$name, height = image_height,
@@ -206,7 +211,8 @@ tweetRcodeAddin <- function(){
                                 ),
                                 numericInput("image_height", "Image height (px)", pkg_options("image_height")),
                                 numericInput("image_aspr", "Image aspect ratio", pkg_options("image_aspr")),
-                                numericInput("image_res", "Image resolution (ppi)", pkg_options("image_res"))
+                                numericInput("image_res", "Image resolution (ppi)", pkg_options("image_res")),
+                                numericInput("image_res_scale", "Resolution scale factor", pkg_options("image_res_scale"))
                )
         )
       )
@@ -235,7 +241,7 @@ tweetRcodeAddin <- function(){
         if(input$reply==""){
           reply = NULL
         }else{
-          input$reply        
+          reply = tweet_id_from_text(input$reply)        
         }
       }
       
@@ -262,6 +268,7 @@ tweetRcodeAddin <- function(){
                                       image_height = input$image_height,
                                       image_aspr = input$image_aspr,
                                       image_res = input$image_res,
+                                      image_res_scale = input$image_res_scale,
                                       envir = new.env()
                                       )
       invisible(stopApp())

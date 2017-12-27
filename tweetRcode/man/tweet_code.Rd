@@ -14,7 +14,8 @@ tweet_code(code, pre_text = NULL, reply = NULL,
   gif_delay = pkg_options("gif_delay"),
   image_height = pkg_options("image_height"),
   image_aspr = pkg_options("image_aspr"),
-  image_res = pkg_options("image_res"), envir = parent.frame(),
+  image_res = pkg_options("image_res"),
+  image_res_scale = pkg_options("image_res_scale"), envir = parent.frame(),
   open_browser = pkg_options("open_browser"))
 }
 \arguments{
@@ -43,6 +44,8 @@ tweet_code(code, pre_text = NULL, reply = NULL,
 \item{image_aspr}{aspect ratio of images}
 
 \item{image_res}{resolution of images}
+
+\item{image_res_scale}{scale factor to multiply dimensions and resolution by}
 
 \item{envir}{environment in which to evaluate the R code}
 

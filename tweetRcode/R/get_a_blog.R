@@ -10,6 +10,7 @@
 #' @param image_height Image height (px)
 #' @param image_aspr Image aspect ratio (width / height)
 #' @param image_res Image resolution (ppi)
+#' @param image_res_scale scale factor to multiply dimensions and resolution by
 #' @param split_on User-defined POSIX regular expression for forced splits in tweets
 #' @param n_format format for tweet numbering, passed to sprintf()
 #'
@@ -27,9 +28,13 @@ get_a_blog <- function(s,
                      image_height = pkg_options("image_height"),
                      image_aspr = pkg_options("image_aspr"),
                      image_res = pkg_options("image_res"),
+                     image_res_scale = pkg_options("image_res_scale"),
                      split_on = pkg_options("getablog_split_on"),
                      n_format = pkg_options("getablog_n_format"))
 {
+  
+  image_height = image_height * image_res_scale
+  image_res = image_res * image_res_scale
   
   reply = tweet_id_from_text(reply)
   
@@ -37,7 +42,8 @@ get_a_blog <- function(s,
     tf = get_device_image(image_device, 
                           image_height,
                           image_aspr,
-                          image_res)
+                          image_res,
+                          1)
   }else{
     tf = NULL 
   }
@@ -130,7 +136,8 @@ get_a_blog_addin_settings <- function(){
             imageOutput("image1", height = 100, width=150),
             numericInput("image_height", "Image height (px)", pkg_options("image_height")),
             numericInput("image_aspr", "Image aspect ratio", pkg_options("image_aspr")),
-            numericInput("image_res", "Image resolution (ppi)", pkg_options("image_res"))
+            numericInput("image_res", "Image resolution (ppi)", pkg_options("image_res")),
+            numericInput("image_res_scale", "Resolution scale factor", pkg_options("image_res_scale"))
           )
          )
       )
@@ -197,10 +204,12 @@ get_a_blog_addin_settings <- function(){
         image_device = NULL
       }
 
-      get_a_blog(input$tweet_text, reply = reply, image_device = image_device,
+      get_a_blog(input$tweet_text, reply = reply, 
+                 image_device = image_device,
                  image_height = input$image_height, 
                  image_aspr = input$image_aspr,
-                 image_res = input$image_res)
+                 image_res = input$image_res,
+                 image_res_scale = input$image_res_scale)
       
       invisible(stopApp())
     })

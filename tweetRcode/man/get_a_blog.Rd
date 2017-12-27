@@ -11,6 +11,7 @@ get_a_blog(s, leave_space = pkg_options("getablog_leave_space"),
   image_height = pkg_options("image_height"),
   image_aspr = pkg_options("image_aspr"),
   image_res = pkg_options("image_res"),
+  image_res_scale = pkg_options("image_res_scale"),
   split_on = pkg_options("getablog_split_on"),
   n_format = pkg_options("getablog_n_format"))
 }
@@ -34,6 +35,8 @@ get_a_blog(s, leave_space = pkg_options("getablog_leave_space"),
 \item{image_aspr}{Image aspect ratio (width / height)}
 
 \item{image_res}{Image resolution (ppi)}
+
+\item{image_res_scale}{scale factor to multiply dimensions and resolution by}
 
 \item{split_on}{User-defined POSIX regular expression for forced splits in tweets}
 

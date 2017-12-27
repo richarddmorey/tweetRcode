@@ -11,11 +11,12 @@ tweet_device = function(which = dev.cur(),
                         image_height = pkg_options("image_height"),
                         image_aspr = pkg_options("image_aspr"),
                         image_res = pkg_options("image_res"),
+                        image_res_scale = pkg_options("image_res_scale"),
                         open_browser = pkg_options("open_browser"))
 {
   force(which)
 
-  tf = get_device_image(which, image_height, image_aspr, image_res)
+  tf = get_device_image(which, image_height, image_aspr, image_res, image_res_scale)
   
   if(do_tweet){
     

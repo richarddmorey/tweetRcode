@@ -27,6 +27,7 @@ The following options are supported
  \item{\code{image_height}}{(\code{numeric}; 600) Image height, in pixels }
  \item{\code{image_aspr}}{(\code{numeric}; 2) Image aspect ratio }
  \item{\code{image_res}}{(\code{numeric}; 144) Image resolution }
+ \item{\code{image_res_scale}}{(\code{numeric}; 1) scale factor to multiply dimensions and resolution by}
  \item{\code{getablog_leave_space}}{(\code{numeric}; 9)  Buffer to leave for numbering of tweets }
  \item{\code{getablog_max_char}}{(\code{numeric}; 280) Maximum number of characters per tweet }
  \item{\code{getablog_split_on}}{(\code{character}; "\\n{-}{-}{-}*\\n") User-defined POSIX regular expression for forced splits in tweets }
