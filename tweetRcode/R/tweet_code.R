@@ -130,7 +130,15 @@ function(code,
       gif_tf = tempfile(fileext = ".gif")
       ao = animation::ani.options()
       animation::ani.options(interval = gif_delay, autobrowse = FALSE)
+      
+      # workaround for bug in animation package
+      cwr = getwd()
+      on.exit({ setwd(cwr) }) # just in case
+      setwd(dirname(gif_tf))
       animation::im.convert(files = images, output = gif_tf)
+      setwd(cwr)
+      
+      
       do.call(animation::ani.options, ao)
       tweet_image_fn = gif_tf
     } else if(tweet_image == "first") {
