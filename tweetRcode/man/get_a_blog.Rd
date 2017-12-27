@@ -10,7 +10,8 @@ get_a_blog(s, leave_space = pkg_options("getablog_leave_space"),
   do_tweet = TRUE, image_device = NULL,
   image_height = pkg_options("image_height"),
   image_aspr = pkg_options("image_aspr"),
-  image_res = pkg_options("image_res"), split_on = "\\\\n---*\\\\n")
+  image_res = pkg_options("image_res"),
+  split_on = pkg_options("getablog_split_on"))
 }
 \arguments{
 \item{s}{character string; text of tweet(s)}
@@ -24,6 +25,16 @@ get_a_blog(s, leave_space = pkg_options("getablog_leave_space"),
 \item{reply}{ID of a post to reply to (null if not a reply)}
 
 \item{do_tweet}{logical; tweet, or just return the splitted text?}
+
+\item{image_device}{Device number to share as image}
+
+\item{image_height}{Image height (px)}
+
+\item{image_aspr}{Image aspect ratio (width / height)}
+
+\item{image_res}{Image resolution (ppi)}
+
+\item{split_on}{User-defined POSIX regular expression for forced splits in tweets}
 }
 \description{
 Tweet, potentially creating tweet storms by splitting tweets on white space

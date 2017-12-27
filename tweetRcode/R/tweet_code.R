@@ -18,11 +18,10 @@
 #'
 #' @return
 #' @export
-#' @import evaluate
-#' @import animation
-#' @import rtweet
-#' @import gistr
-#' @import dplyr
+#' @importFrom evaluate evaluate
+#' @importFrom animation im.convert ani.options
+#' @importFrom gistr gist_create
+#' @importFrom dplyr last
 #'
 #' @examples
 tweet_code <-
@@ -56,6 +55,7 @@ function(code,
   
   tf = get_tf_wildcard()
   
+  # evaluate code dumping images to png files
   png(filename = tf$name, height = image_height,
       width = image_aspr * image_height,
       res = image_res)
@@ -65,9 +65,11 @@ function(code,
                            stop_on_error = stop_on_errors)
   dev.off(dv)
 
+  # get the image paths
   images = dir(tf$dir, tf$pattern, full.names = TRUE)
   
-  
+  # Convert results to tweet text
+  # Note that this excludes warnings and messages
   tweet_text = ""
   
   for (obj in out) {
@@ -81,11 +83,9 @@ function(code,
     }
   }
   
-  
+  # Create a gist
   if (do_gist) {
-    ## Authenticate GitHub
-    gistr::gist_auth()
-    
+
     h = image_height / image_res
     w = h * image_aspr
     
@@ -117,15 +117,16 @@ function(code,
     
   }
   
+  # Create images
   if (tweet_image != "none" & length(images)>0) {
     if( length(images)==1){
       tweet_image_fn = images[1]
     }else if(tweet_image == "gif") {
       gif_tf = tempfile(fileext = ".gif")
-      ao = ani.options()
-      ani.options(interval = gif_delay, autobrowse = FALSE)
+      ao = animation::ani.options()
+      animation::ani.options(interval = gif_delay, autobrowse = FALSE)
       animation::im.convert(files = images, output = gif_tf)
-      do.call(ani.options, ao)
+      do.call(animation::ani.options, ao)
       tweet_image_fn = gif_tf
     } else if(tweet_image == "first") {
       tweet_image_fn = images[1]
@@ -140,7 +141,7 @@ function(code,
   
   tweet_text = paste0(pre_text, "\n", tweet_text)
   
-  
+  # tweet
   if(do_tweet){
     
     status = post_and_return_id(tweet_text,

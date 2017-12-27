@@ -14,7 +14,7 @@
 #'
 #' @return
 #' @export
-#' @import rtweet
+#' 
 #' @examples
 get_a_blog <- function(s, 
                      leave_space = pkg_options("getablog_leave_space"),
@@ -46,7 +46,8 @@ get_a_blog <- function(s,
     splits = s
   }
   
-  splits = paste(splits, " (",1:length(splits),"/",length(splits),")", sep = "")
+  if(length(splits)>1)
+    splits = paste(splits, " (",1:length(splits),"/",length(splits),")", sep = "")
   
   if(do_tweet){
     
@@ -80,7 +81,7 @@ get_a_blog <- function(s,
 #' @export
 #'
 #' @examples
-#' @import rstudioapi  
+#' @import rstudioapi
 get_a_blog_addin_simple = function(){
 
   context <- rstudioapi::getActiveDocumentContext()
@@ -212,57 +213,20 @@ get_a_blog_addin_settings <- function(){
   runGadget(ui, server, viewer = viewer)
 }
 
-## Does initial user-defined splits, then passes each segment off 
+
+#' Initial user-defined splits, then passes each segment off 
 ## to be split by size
-split_tweet0 = function(s, split_on = "\\n---*\\n", ...){
+#'
+#' @param s string containing tweet
+#' @param split_on  User-defined POSIX regular expression for forced splits in tweets
+#' @param leave_space integer; how much space to leave at the end for numbering
+#' @param max_char maximum characters that can go in a tweet
+#'
+#' @return
+#' @importFrom stringi stri_wrap
+#'
+#' @examples
+split_tweet0 = function(s, split_on = "\\n---*\\n", leave_space, max_char){
   splt = strsplit(s, split_on)[[1]]
-  unlist(lapply(splt, split_tweet1))
+  stringi::stri_wrap(splt, max_char - leave_space, whitespace_only = TRUE, simplify = TRUE)
 }
-
-## Split by size
-split_tweet1 = function(s, 
-                        leave_space = pkg_options("getablog_leave_space"),
-                        max_char = pkg_options("getablog_max_char"))
-{
-  
-  s = trimws(s)
-  
-  split_at = max_char - leave_space
-  s0 = unlist(strsplit(s, " ", fixed = TRUE))
-  nc = nchar(s0)
-  cc = cumsum(nc)
-  cc = cc + 1:length(cc)
-  
-  if( nchar(s) > split_at ){
-    total_word = 0
-    total_char = 0
-    splits = c()
-    done = FALSE
-  
-    while(!done){
-    
-      if(total_word == 0){
-        new_split = max(which(cc < split_at))
-      }else{
-        new_split = new_split + max(which(cc[-(1:total_word)] - total_char < split_at ))
-      }
-    
-      splits = c(splits, paste(paste(s0[(total_word + 1):new_split]," ", sep = ""), collapse = ""))
-      total_char = sum(sapply(splits, nchar))
-      total_word = new_split
-      if(total_word >= length(cc))
-        done = TRUE
-    }
-  }else{ # No need for splitting
-    splits = s
-  }
-  
-  splits = trimws(splits)
-  
-  # Remove any empty strings
-  splits = splits[ nchar(splits)>0 ]
-  
-  return(splits)
-  
-}
-

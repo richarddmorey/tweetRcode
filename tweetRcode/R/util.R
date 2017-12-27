@@ -35,7 +35,7 @@ tweet_id_from_text = function(s){
 #' @export
 #'
 #' @examples
-#' @import dplyr
+#' @importFrom dplyr last
 get_device_image = function(which = dev.cur(), 
                             image_height = pkg_options("image_height"),
                             image_aspr = pkg_options("image_aspr"),
@@ -62,6 +62,14 @@ interactive_devices = function(dev){
   dev.list()[idx]
 }
 
+#' Post a tweet and get its ID
+#'
+#' @param ... Arguments to pass to rtweet::post_tweet
+#'
+#' @return
+#' @importFrom rtweet post_tweet get_timeline
+#'
+#' @examples
 post_and_return_id = function(...){
   result = rtweet::post_tweet(...)
   username = result$request$auth_token$credentials$screen_name

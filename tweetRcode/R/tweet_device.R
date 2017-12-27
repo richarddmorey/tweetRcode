@@ -4,7 +4,6 @@
 #' @export
 #'
 #' @examples
-#' @import rtweet
 tweet_device = function(which = dev.cur(), 
                         tweet_text = "", 
                         reply = NULL,
